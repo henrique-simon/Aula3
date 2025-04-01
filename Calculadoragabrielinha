@@ -1,0 +1,83 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Venda {
+    private int quantidade;
+    private double precoUnitario;
+    private double desconto;
+    private double valorTotal;
+    private double valorComDesconto;
+
+    public Venda(int quantidade, double precoUnitario) {
+        this.quantidade = quantidade;
+        this.precoUnitario = precoUnitario;
+        this.valorTotal = calcularValorTotal();
+        this.valorComDesconto = calcularValorComDesconto();
+    }
+
+    private double calcularValorTotal() {
+        return this.quantidade * this.precoUnitario;
+    }
+
+    private double calcularValorComDesconto() {
+        if (this.quantidade > 10) {
+            this.desconto = 0.05 * this.valorTotal; // 5% de desconto
+        }
+        return this.valorTotal - this.desconto;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Venda: %d plantas, Valor Total: R$%.2f, Desconto: R$%.2f, Valor com Desconto: R$%.2f",
+                this.quantidade, this.valorTotal, this.desconto, this.valorComDesconto);
+    }
+
+    public double getValorComDesconto() {
+        return valorComDesconto;
+    }
+}
+
+class SistemaVendas {
+    private List<Venda> vendas;
+
+    public SistemaVendas() {
+        vendas = new ArrayList<>();
+    }
+
+    public Venda registrarVenda(int quantidade, double precoUnitario) {
+        Venda venda = new Venda(quantidade, precoUnitario);
+        vendas.add(venda);
+        return venda;
+    }
+
+    public void exibirVendas() {
+        if (vendas.isEmpty()) {
+            System.out.println("Nenhuma venda registrada.");
+        } else {
+            for (Venda venda : vendas) {
+                System.out.println(venda);
+            }
+        }
+    }
+
+    public void menu() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("\nMenu:");
+            System.out.println("1. Registrar venda");
+            System.out.println("2. Exibir vendas registradas");
+            System.out.println("3. Sair");
+            System.out.print("Escolha uma opção: ");
+            String opcao = scanner.nextLine();
+
+            if (opcao.equals("1")) {
+                System.out.print("Informe a quantidade de plantas: ");
+                int quantidade = Integer.parseInt(scanner.nextLine());
+                System.out.print("Informe o preço da planta: ");
+                double precoUnitario = Double.parseDouble(scanner.nextLine());
+                Venda venda = registrarVenda(quantidade, precoUnitario);
+                System.out.println("Venda registrada: " + venda);
+            } else if (opcao.equals("2")) {
+                exibirVendas();
+            } else if (opcao.equals("
